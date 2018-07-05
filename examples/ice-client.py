@@ -8,15 +8,29 @@ import logging
 import aioice
 import websockets
 
-STUN_SERVER = ('stun.l.google.com', 19302)
-WEBSOCKET_URI = 'ws://127.0.0.1:8765'
+STUN_SERVER=('stun.vlj.lt', 3478)
+TURN_SERVER=(('turn.vlj.lt', 3478), 'admin', 'admin')
+#WEBSOCKET_URI = 'ws://127.0.0.1:8765'
+WEBSOCKET_URI='ws://213.136.70.68:8765'
 
+def dump_candidates(connection):
+    print ('>>> CANDIDATES <<<')
+    for cc in connection.local_candidates:
+        print (cc)
+    print ('>>> CANDIDATES <<<')
 
 async def offer(options):
     connection = aioice.Connection(ice_controlling=True,
                                    components=options.components,
-                                   stun_server=STUN_SERVER)
+                                   stun_server=STUN_SERVER,
+                                   turn_server=TURN_SERVER[0],
+                                   turn_username=TURN_SERVER[1],
+                                   turn_password=TURN_SERVER[2],
+                                   use_ipv4=True,
+                                   use_ipv6=False)
     await connection.gather_candidates()
+
+    dump_candidates(connection)
 
     websocket = await websockets.connect(WEBSOCKET_URI)
 
@@ -54,8 +68,15 @@ async def offer(options):
 async def answer(options):
     connection = aioice.Connection(ice_controlling=False,
                                    components=options.components,
-                                   stun_server=STUN_SERVER)
+                                   stun_server=STUN_SERVER,
+                                   turn_server=TURN_SERVER[0],
+                                   turn_username=TURN_SERVER[1],
+                                   turn_password=TURN_SERVER[2],
+                                   use_ipv4=True,
+                                   use_ipv6=False)
     await connection.gather_candidates()
+
+    dump_candidates(connection)
 
     websocket = await websockets.connect(WEBSOCKET_URI)
 
