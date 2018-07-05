@@ -1,0 +1,18 @@
+version: '3'
+services:
+  signaling:
+    build: .
+    command: ["python3", "examples/signaling-server.py"]
+    restart: always
+  answer:
+    build: .
+    command: ["python3", "examples/ice-client.py", "answer"]
+    links:
+      - "signaling:signaling"
+    restart: always
+  offer:
+    build: .
+    command: ["python3", "examples/ice-client.py", "offer"]
+    links:
+      - "signaling:signaling"
+    restart: always

@@ -12,12 +12,13 @@ STUN_SERVER=('stun.vlj.lt', 3478)
 TURN_SERVER=(('turn.vlj.lt', 3478), 'admin', 'admin')
 #WEBSOCKET_URI = 'ws://127.0.0.1:8765'
 WEBSOCKET_URI='ws://213.136.70.68:8765'
+#WEBSOCKET_URI='ws://signaling:8765'
 
 def dump_candidates(connection):
-    print ('>>> CANDIDATES <<<')
+    print ('\n>>> CANDIDATES <<<')
     for cc in connection.local_candidates:
         print (cc)
-    print ('>>> CANDIDATES <<<')
+    print ('>>> CANDIDATES <<<\n')
 
 async def offer(options):
     connection = aioice.Connection(ice_controlling=True,
