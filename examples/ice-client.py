@@ -33,6 +33,8 @@ async def offer(options):
 
     dump_candidates(connection)
 
+    await asyncio.sleep(5)
+    
     websocket = await websockets.connect(WEBSOCKET_URI)
 
     # send offer

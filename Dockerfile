@@ -33,7 +33,7 @@ RUN ( \
     
 RUN mkdir -p /r/aioice
 
-ADD . /r/aioice 
+ADD . /r/aioice
 
 ADD docker/docker-entrypoint.sh /docker-entrypoint.sh 
 
